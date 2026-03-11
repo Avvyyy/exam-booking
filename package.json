@@ -24,7 +24,8 @@
     "start": "node dist/app.js",
     "dev": "nodemon --exec ts-node src/app.ts",
     "build": "tsc"
-  },  "dependencies": {
+  },
+  "dependencies": {
     "@types/express": "^5.0.3",
     "@types/node": "^24.3.1",
     "bcryptjs": "^3.0.2",
@@ -37,7 +38,7 @@
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^7.0.5",
     "nodemon": "^3.1.10",
-    "pg": "^8.16.3",
+    "pg": "^8.20.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "ts-node": "^10.9.2",
