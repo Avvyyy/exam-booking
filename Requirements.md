@@ -8,6 +8,7 @@ Admins should be able to:
     >-course code
     >-level
 - **View dashboard** showing upcoming exams, number of students registered for each upcoming exam, total number of reschedule requests
+- **Schedule** course exams for given datetimes
 - **Reschedule** a course for a different date and time slot
 - **Accept/Reject** a student's reschedule request
 
@@ -15,6 +16,7 @@ Admins should be able to:
 The system should be able to:
 - **Create admins** where necessary
 - **Seed Db** with admin login details and courses
+- **Split datetime** of a gien course exam into batches
 - **Calculate number of students** for a given exam batch
 - **Process student payments** for rescheduling and allow students to reschedule when payment is confirmed (post mvp implementation)
 
