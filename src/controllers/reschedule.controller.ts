@@ -38,7 +38,14 @@ export const getRescheduleRequestById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const request = await fetchRescheduleRequestById(+id);
+    if (!id || Number.isNaN(Number(id))) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid reschedule request id",
+      });
+    }
+
+    const request = await fetchRescheduleRequestById(Number(id));
 
     if (!request) {
       return res.status(404).json({
@@ -78,6 +85,13 @@ export const handleRescheduleAction = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { action, adminReason } = req.body; // action = 'accept' | 'reject'
 
+    if (!id || Number.isNaN(Number(id))) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid reschedule request id",
+      });
+    }
+
     if (!["accept", "reject"].includes(action)) {
       return res.status(400).json({
         status: false,
@@ -87,7 +101,7 @@ export const handleRescheduleAction = async (req: Request, res: Response) => {
 
     const newStatus = action === "accept" ? "approved" : "rejected";
     const updatedRequest = await updateRescheduleStatus(
-      +id,
+      Number(id),
       newStatus,
       adminReason
     );

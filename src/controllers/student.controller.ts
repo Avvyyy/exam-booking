@@ -77,8 +77,9 @@ export const getUserExamSchedules = async (req: Request, res: Response) => {
 // Get available slots for a course
 export const getAvailableSlotsForCourse = async (req: Request, res: Response) => {
   const { courseId } = req.params;
+  const parsedCourseId = Array.isArray(courseId) ? courseId[0] : courseId;
 
-  if (!courseId) {
+  if (!parsedCourseId) {
     return res.status(400).json({
       status: false,
       message: "Course id is required",
@@ -87,7 +88,7 @@ export const getAvailableSlotsForCourse = async (req: Request, res: Response) =>
   }
 
   try {
-    const slots = await fetchAvailableSlotsForCourse(parseInt(courseId));
+    const slots = await fetchAvailableSlotsForCourse(parseInt(parsedCourseId, 10));
     return res.status(200).json({
       status: true,
       message: "Available slots retrieved successfully",
@@ -105,8 +106,9 @@ export const getAvailableSlotsForCourse = async (req: Request, res: Response) =>
 
 export const getAvailableBatches = async (req: Request, res: Response) => {
   const { slotId } = req.params;
+  const parsedSlotId = Array.isArray(slotId) ? slotId[0] : slotId;
 
-  if (!slotId) {
+  if (!parsedSlotId) {
     return res.status(400).json({
       status: false,
       message: "slotId parameter is required",
@@ -115,7 +117,7 @@ export const getAvailableBatches = async (req: Request, res: Response) => {
   }
 
   try {
-    const batches = await fetchAvailableBatchesForSlot(parseInt(slotId, 10));
+    const batches = await fetchAvailableBatchesForSlot(parseInt(parsedSlotId, 10));
     const formatted = batches.map((b: any) => ({
       ...b,
       start_time: dayjs.utc(b.start_time).tz("Africa/Lagos").format("YYYY-MM-DD HH:mm:ss"),

@@ -3,10 +3,10 @@ import express from 'express';
 import cors from "cors";
 import type { Application } from "express";
 import { swaggerDocs } from "./docs/swagger";
-import { studentRoutes } from './routes/student.route';
-import { adminRoutes } from './routes/admin.route';
+// import { studentRoutes } from './routes/student.route';
+// import { adminRoutes } from './routes/admin.route';
 import { authRoutes } from './routes/auth.route';
-import { rescheduleRoutes } from './routes/reschedule.route';
+// import { rescheduleRoutes } from './routes/reschedule.route';
 
 const app: Application = express();
 
@@ -28,9 +28,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/', authRoutes);
-app.use('/reschedule', rescheduleRoutes);
-app.use('/student', studentRoutes);
-app.use('/admin', adminRoutes);
+// app.use('/reschedule', rescheduleRoutes);
+// app.use('/student', studentRoutes);
+// app.use('/admin', adminRoutes);
 
 swaggerDocs(app);
 

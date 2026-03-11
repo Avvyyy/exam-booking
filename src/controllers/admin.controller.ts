@@ -57,7 +57,8 @@ export const createExamSlot = async (req: Request, res: Response) => {
 
 // Get user details
 export const getUserDetails = async (req: Request, res: Response) => {
-  const { studentId: id } = req.params;
+  const rawId = req.params.studentId;
+  const id = Array.isArray(rawId) ? rawId[0] : rawId;
 
   if (!id) {
     return res.status(400).json({
@@ -68,7 +69,7 @@ export const getUserDetails = async (req: Request, res: Response) => {
   }
 
   try {
-    const user = await fetchUserDetails(parseInt(id));
+    const user = await fetchUserDetails(parseInt(id, 10));
     if (!user) {
       return res.status(400).json({
         status: false,
