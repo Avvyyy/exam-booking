@@ -8,7 +8,7 @@ export const config = {
   saltRounds: process.env.SALT_ROUNDS ? parseInt(process.env.SALT_ROUNDS) : 10,
   jwtSecret: process.env.JWT_SECRET || "jhgfdgfjhk",
   jwtLifetime: process.env.JWT_LIFETIME || "1h",
-  dbUrl: process.env.POSTGRESQL_ADDON_URI ?? process.env.DB_URL ?? ""
+  dbUrl: process.env.DB_URL ?? ""
 };
 
 export const connection = new Pool({

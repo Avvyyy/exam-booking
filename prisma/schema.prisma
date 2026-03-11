@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                   Int                    @id @default(autoincrement())
+  matricNo             String?                @map("matricno")
+  fullName             String                 @map("fullname")
+  email                String                 @unique
+  department           String?
+  level                Int?
+  password             String
+  role                 String                 @default("student")
+  createdAt            DateTime               @default(now()) @map("created_at")
+  studentCourses       StudentCourse[]
+  studentSchedules     StudentSchedule[]
+  rescheduleRequests   RescheduleRequest[]
+
+  @@map("user")
+}
+
+model Course {
+  id               Int                 @id @default(autoincrement())
+  code             String              @unique
+  title            String
+  level            Int?
+  studentCourses   StudentCourse[]
+  courseSlots      CourseSlot[]
+  studentSchedules StudentSchedule[]
+  rescheduleReqs   RescheduleRequest[]
+
+  @@map("course")
+}
+
+model StudentCourse {
+  id        Int      @id @default(autoincrement())
+  studentId Int      @map("student_id")
+  courseId  Int      @map("course_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, courseId])
+  @@map("student_course")
+}
+
+model ExamSlot {
+  id               Int           @id @default(autoincrement())
+  startDate        DateTime      @map("startdate")
+  endDate          DateTime      @map("enddate")
+  physicalCapacity Int           @map("physical_capacity")
+  onlineCapacity   Int?          @map("online_capacity")
+  courseSlots      CourseSlot[]
+  examBatches      ExamBatch[]
+  studentSchedules StudentSchedule[]
+
+  @@map("exam_slot")
+}
+
+model CourseSlot {
+  id       Int      @id @default(autoincrement())
+  courseId Int      @map("course_id")
+  slotId   Int      @map("slot_id")
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  slot     ExamSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, slotId])
+  @@map("course_slot")
+}
+
+model ExamBatch {
+  id               Int               @id @default(autoincrement())
+  slotId           Int               @map("slot_id")
+  batchNumber      Int               @map("batch_number")
+  startTime        DateTime          @map("start_time")
+  endTime          DateTime          @map("end_time")
+  capacity         Int
+  slot             ExamSlot          @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  studentSchedules StudentSchedule[]
+
+  @@unique([slotId, batchNumber])
+  @@map("exam_batches")
+}
+
+model StudentSchedule {
+  id           Int              @id @default(autoincrement())
+  studentId    Int              @map("student_id")
+  courseId     Int              @map("course_id")
+  slotId       Int              @map("slot_id")
+  batchId      Int?             @map("batch_id")
+  seatNumber   Int?             @map("seatnumber")
+  mode         String           @default("physical")
+  rescheduled  Boolean          @default(false)
+  createdAt    DateTime         @default(now()) @map("created_at")
+  student      User             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course       Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  slot         ExamSlot         @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  batch        ExamBatch?       @relation(fields: [batchId], references: [id], onDelete: SetNull)
+
+  @@unique([studentId, courseId])
+  @@map("student_schedule")
+}
+
+model RescheduleRequest {
+  id          Int      @id @default(autoincrement())
+  studentId   Int      @map("student_id")
+  courseId    Int      @map("course_id")
+  reason      String?
+  adminReason String?  @map("admin_reason")
+  status      String   @default("pending")
+  paymentRef  String?  @map("payment_ref")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  student     User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, courseId, status])
+  @@map("reschedule_requests")
+}
