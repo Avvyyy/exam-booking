@@ -15,7 +15,8 @@ datasource db {
 model User {
   id                   Int                    @id @default(autoincrement())
   matricNo             String?                @map("matricno")
-  fullName             String                 @map("fullname")
+  firstName            String                 @map("first_name")
+  lastName             String                 @map("last_name")
   email                String                 @unique
   department           String?
   level                Int?
