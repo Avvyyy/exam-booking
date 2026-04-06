@@ -13,6 +13,7 @@ export const config = {
 
 export const connection = new Pool({
   connectionString: config.dbUrl,
+  max: 100,
     // ssl: false,
   ssl: {
     rejectUnauthorized: false,

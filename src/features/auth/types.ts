@@ -1,7 +1,7 @@
 import { UserRole } from "../user/types";
 
 export interface LoginRequestBody {
-  identifier: string;
+  email: string;
   password: string;
 }
 
@@ -13,7 +13,8 @@ export interface RegisterUserRequestBody {
   level?: number;
   role: UserRole;
   matricNo?: string;
-  faculty?: number;
+  department?: string;
+  selectedCourseIds?: number[];
 }
 
 export interface RegisterCourse {
@@ -26,6 +27,11 @@ export interface AuthUser {
   fullName: string;
   email: string;
   role: UserRole;
+}
+
+export interface AuthResponse {
+  user: AuthUser;
+  token: string;
 }
 
 // export interface AuthTokenPayload {

@@ -4,26 +4,23 @@ export enum UserRole {
 }
 
 export interface User {
-  id: string;
+  id: number;
   matricNo?: string;
   fullName: string;
   email: string;
-  faculty?: string;
-  courseOfStudy?: string;
   department?: string;
   level?: number;
-  password: string;
-  created_at: Date;
+  createdAt: Date;
   role: UserRole;
 }
 
 export interface StudentOnboardingPayload {
   matricNo: string;
-  fullName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   level: number;
-  courseOfStudy: string;
-  faculty: string;
+  department: string;
   password: string;
   selectedCourseIds: number[];
 }
@@ -34,7 +31,7 @@ export interface LoginPayload {
 }
 
 export interface AuthenticatedUser {
-  id: string;
+  id: number;
   matricNo?: string;
   fullName: string;
   email: string;
