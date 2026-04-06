@@ -3,10 +3,11 @@ import express from 'express';
 import cors from "cors";
 import type { Application } from "express";
 import { swaggerDocs } from "./docs/swagger";
-// import { studentRoutes } from './routes/student.route';
-// import { adminRoutes } from './routes/admin.route';
-// import { authRoutes } from './routes/auth.route';
-// import { rescheduleRoutes } from './routes/reschedule.route';
+import { errorHandler } from './middleware/error-handler';
+import authRoutes from './features/auth/routes';
+import userRoutes from './features/user/routes';
+import examRoutes from './features/exam/routes';
+import rescheduleRoutes from './features/reschedule/routes';
 
 const app: Application = express();
 
@@ -27,12 +28,13 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use('/', authRoutes);
-// app.use('/reschedule', rescheduleRoutes);
-// app.use('/student', studentRoutes);
-// app.use('/admin', adminRoutes);
+app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
+app.use('/exams', examRoutes);
+app.use('/reschedule', rescheduleRoutes);
 
 swaggerDocs(app);
+app.use(errorHandler);
 
 const port = config.port || 3000;
 
