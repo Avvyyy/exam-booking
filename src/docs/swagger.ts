@@ -83,7 +83,7 @@ const options = {
         description: "Development server",
       },
       {
-        url: "https://exma-rr6x.onrender.com",
+        url: "https://exam-booking-swsg.onrender.com/",
         description: "Production server",
       },
     ],
