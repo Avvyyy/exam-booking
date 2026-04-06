@@ -14,8 +14,8 @@ const app: Application = express();
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://exma-rr6x.onrender.com",
-    "https://exma-rr6x.onrender.com/api-docs",
+    "https://exam-booking-swsg.onrender.com",
+    "https://exam-booking-swsg.onrender.com/api-docs",
     "http://localhost:3001",
     "http://127.0.0.1:3000",
     "http://localhost:5000"
@@ -32,6 +32,10 @@ app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/exams', examRoutes);
 app.use('/reschedule', rescheduleRoutes);
+
+app.get("/", (_req, res) => {
+  res.send("Welcome to the Exam Booking System API. Go to /api-docs to view the API documentation.");
+});
 
 swaggerDocs(app);
 app.use(errorHandler);
